@@ -2,40 +2,9 @@ import {
   TREE_ADD_ITEM, TREE_TOGGLE_ITEM
 } from '../consts/mutation-type'
 
-export const state = () => ({
-  treeData: {
-    name: 'My Tree',
-    isOpen: false,
-    children: [
-      { name: 'hello', isOpen: false, children: [] },
-      { name: 'wat', isOpen: false, children: [] },
-      {
-        name: 'child folder',
-        isOpen: false,
-        children: [
-          {
-            name: 'child folder',
-            isOpen: false,
-            children: [
-              { name: 'hello',isOpen: false, children: [] },
-              { name: 'wat' ,isOpen: false, children: [] }
-            ]
-          },
-          { name: 'hello', isOpen: false, children: [] },
-          { name: 'wat', isOpen: false, children: [] },
-          {
-            name: 'child folder',
-            isOpen: false,
-            children: [
-              { name: 'wat', isOpen: false, children: [] },
-              { name: 'hello', isOpen: false, children: [] }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-})
+import { treeData } from '../src/route/tree'
+
+export const state = () => ({ treeData })
 
 export const getters = {
   isChild: () => item => item.children && item.children.length
