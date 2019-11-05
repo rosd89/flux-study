@@ -1,39 +1,14 @@
 import {
-  TREE_ADD_ITEM, TREE_TOGGLE_ITEM
+  TREE_SET_ITEMS, TREE_ADD_ITEM, TREE_TOGGLE_ITEM
 } from '../consts/mutation-type'
+
+import { getTreeData } from '../src/route/tree'
 
 export const state = () => ({
   treeData: {
-    name: 'My Tree',
+    name: '',
     isOpen: false,
-    children: [
-      { name: 'hello', isOpen: false, children: [] },
-      { name: 'wat', isOpen: false, children: [] },
-      {
-        name: 'child folder',
-        isOpen: false,
-        children: [
-          {
-            name: 'child folder',
-            isOpen: false,
-            children: [
-              { name: 'hello',isOpen: false, children: [] },
-              { name: 'wat' ,isOpen: false, children: [] }
-            ]
-          },
-          { name: 'hello', isOpen: false, children: [] },
-          { name: 'wat', isOpen: false, children: [] },
-          {
-            name: 'child folder',
-            isOpen: false,
-            children: [
-              { name: 'wat', isOpen: false, children: [] },
-              { name: 'hello', isOpen: false, children: [] }
-            ]
-          }
-        ]
-      }
-    ]
+    children: []
   }
 })
 
@@ -42,13 +17,12 @@ export const getters = {
 }
 
 export const mutations = {
-  [TREE_ADD_ITEM]: (state, item) => {
+  [TREE_SET_ITEMS]: (state, treeData) => {
+    state.treeData = treeData
+  },
+  [TREE_ADD_ITEM]: (state, { item, child }) => {
     item.isOpen = true
-    item.children.push({
-      name: 'new stuff',
-      isOpen: false,
-      children: []
-    })
+    item.children.push(child)
   },
   [TREE_TOGGLE_ITEM]: (state, item) => {
     item.isOpen = !item.isOpen
@@ -56,11 +30,22 @@ export const mutations = {
 }
 
 export const actions = {
+  fetch ({ commit }) {
+    const d = getTreeData()
+    commit(TREE_SET_ITEMS, d)
+  },
   makeFolder ({ dispatch }, item) {
     dispatch('addItem', item)
   },
   addItem ({ commit }, item) {
-    commit(TREE_ADD_ITEM, item)
+    commit(TREE_ADD_ITEM, {
+      item,
+      child: {
+        name: 'new stuff',
+        isOpen: false,
+        children: []
+      }
+    })
   },
   toggle ({ commit }, item) {
     commit(TREE_TOGGLE_ITEM, item)

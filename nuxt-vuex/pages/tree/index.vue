@@ -18,6 +18,9 @@ export default {
   name: 'TreeIndex',
   components: { TreeItem },
   computed: mapState('tree', ['treeData']),
+  fetch ({ store: { dispatch } }) {
+    dispatch('tree/fetch')
+  },
   methods: mapActions('tree', ['makeFolder', 'addItem'])
 }
 </script>
