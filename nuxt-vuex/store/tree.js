@@ -20,13 +20,9 @@ export const mutations = {
   [TREE_SET_ITEMS]: (state, treeData) => {
     state.treeData = treeData
   },
-  [TREE_ADD_ITEM]: (state, item) => {
+  [TREE_ADD_ITEM]: (state, { item, child }) => {
     item.isOpen = true
-    item.children.push({
-      name: 'new stuff',
-      isOpen: false,
-      children: []
-    })
+    item.children.push(child)
   },
   [TREE_TOGGLE_ITEM]: (state, item) => {
     item.isOpen = !item.isOpen
@@ -42,7 +38,14 @@ export const actions = {
     dispatch('addItem', item)
   },
   addItem ({ commit }, item) {
-    commit(TREE_ADD_ITEM, item)
+    commit(TREE_ADD_ITEM, {
+      item,
+      child: {
+        name: 'new stuff',
+        isOpen: false,
+        children: []
+      }
+    })
   },
   toggle ({ commit }, item) {
     commit(TREE_TOGGLE_ITEM, item)
