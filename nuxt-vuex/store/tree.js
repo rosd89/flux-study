@@ -1,16 +1,25 @@
 import {
-  TREE_ADD_ITEM, TREE_TOGGLE_ITEM
+  TREE_SET_ITEMS, TREE_ADD_ITEM, TREE_TOGGLE_ITEM
 } from '../consts/mutation-type'
 
-import { treeData } from '../src/route/tree'
+import { getTreeData } from '../src/route/tree'
 
-export const state = () => ({ treeData })
+export const state = () => ({
+  treeData: {
+    name: '',
+    isOpen: false,
+    children: []
+  }
+})
 
 export const getters = {
   isChild: () => item => item.children && item.children.length
 }
 
 export const mutations = {
+  [TREE_SET_ITEMS]: (state, treeData) => {
+    state.treeData = treeData
+  },
   [TREE_ADD_ITEM]: (state, item) => {
     item.isOpen = true
     item.children.push({
@@ -25,6 +34,10 @@ export const mutations = {
 }
 
 export const actions = {
+  fetch ({ commit }) {
+    const d = getTreeData()
+    commit(TREE_SET_ITEMS, d)
+  },
   makeFolder ({ dispatch }, item) {
     dispatch('addItem', item)
   },
